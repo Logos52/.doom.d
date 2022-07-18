@@ -29,11 +29,11 @@
       global-visual-fill-column-mode +1
       +global-word-wrap-mode +1)
 
-(setq
+(setq 
  org-roam-directory "/Users/n1/Library/Mobile Documents/com~apple~CloudDocs/NX/Capture/"
  org-roam-index-file "/Users/n1/Library/Mobile Documents/com~apple~CloudDocs/NX/Capture/index.org"
  org-directory "/Users/n1/Library/Mobile Documents/com~apple~CloudDocs/NX/"
- projectile-project-search-path '("~/Documents/Projects")
+ projectile-project-search-path '("~/Documents/Projects/")
  display-line-numbers-type t
  fancy-splash-image "/Users/n1/Documents/Projects/Emacs/Images/emacs-e-logo.png"
  deft-directory "/Users/n1/Library/Mobile Documents/com~apple~CloudDocs/NX/"
@@ -43,21 +43,15 @@
  deft-use-filter-string-for-filename t
  deft-text-mode 'org-mode
  org-mode-hide-leading-stars t
- ;org-bullets-bullet-list '("⁖")
+;org-bullets-bullet-list '("⁖")i
  org-superstar-headline-bullets-list '("⁖" "○" "⚬" "∙" "∘")
  org-ellipsis " ... "
  org-startup-with-inline-images t
- org-image-actual-width nil)
-;org-todo-keyword-faces
-;   '(("TODO" :foreground "#7c7c75" :weight normal :underline t)
-;     ("WAITING" :foreground "#9f7efe" :weight normal :underline t)
-;     ("INPROGRESS" :foreground "#0098dd" :weight normal :underline t)
-;     ("DONE" :foreground "#50a14f" :weight normal :underline t)
-;     ("CANCELLED" :foreground "#ff6480" :weight normal :underline t))
-;   org-priority-faces '((65 :foreground "#e45649")
-;                        (66 :foreground "#da8548")
-;                        (67 :foreground "#0098dd"))
-;   ))
+ org-image-actual-width nil
+;Evil mode revert
+ evil-move-cursor-back nil
+ evil-move-beyond-eol t)
+
 
 
  ;+doom-dashboard-banner-file (expand-file-name "logo.png" doom-private-dir)
@@ -95,7 +89,8 @@
   (org-journal-dir "/Users/n1/Library/Mobile Documents/com~apple~CloudDocs/NX/Journal/")
   (org-journal-date-prefix "#+title: ")
   ;(org-journal-date-format "%A, %d %B %Y")
-  (org-journal-date-format "%Y-%m-%d, %a")
+  ;(org-journal-date-format "%Y-%m-%d, %a")
+  (org-journal-date-format "%Y-%m-%d")
   (org-journal-time-prefix "* ")
   (org-journal-file-format "%Y-%m-%d.org"))
 
@@ -109,7 +104,7 @@
     (org-roam-capture-templates
      '(("d" "default" plain
       "%?"
-      :if-new (file+head "%<%Y%m%d%H%M>-${slug}.org" "#+title: ${title}\n")
+      :if-new (file+head "%<%Y%m%d%H%M>-${slug}.org" "#+TITLE: ${title}\n")
       :unnarrowed t)))
     (org-roam-dailies-directory "/Users/n1/Library/Mobile Documents/com~apple~CloudDocs/NX/Journal/")
     (org-roam-dailies-capture-templates
@@ -160,3 +155,13 @@
           org-roam-ui-follow t
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start t))
+
+;;remove Org mode tilde-fringe & Line numbers
+(remove-hook 'text-mode-hook #'vi-tilde-fringe-mode)
+(remove-hook 'org-mode-hook #'vi-tilde-fringe-mode)
+
+(add-hook 'org-mode-hook (lambda () (linum-mode 0)))
+
+;; (global-set-key [right-fringe mouse-1] 'mouse-goto-eol) ; To use the right fringe.
+;; (global-set-key (kbd "<mouse-1>") 'mouse-goto-eol) ; Useless, since click in text area does it by default.
+
