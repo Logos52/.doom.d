@@ -1,7 +1,6 @@
 # .doom.d
 Doom Emacs Private Config
-
-My personal Doom Emacs private config. It's primarily used for Org-Roam as Second Brain style notetaking.
+It's primarily used for Org-Roam as Second Brain style notetaking.
 
 Things added from Vanilla
 - Doom Gruvbox theme
