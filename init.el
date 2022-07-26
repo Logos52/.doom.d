@@ -15,28 +15,26 @@
 ;;      directory (for easy access to its source code).
 
 (doom! :input
-       ;;bidi              ; (tfel ot) thgir etirw uoy gnipleh
        ;;chinese
        ;;japanese
        ;;layout            ; auie,ctsrnm is the superior home row
 
        :completion
        company           ; the ultimate code completion backend
+       (corfu +orderless)
        ;;helm              ; the *other* search engine for love and life
-       ;;ido               ; the other *other* search engine...
-       ;;ivy               ; a search engine for love and life
-       vertico           ; the search engine of the future
+       (vertico +orderless +icons)           ; the search engine of the future
 
        :ui
        deft              ; notational velocity for Emacs
        doom              ; what makes DOOM look the way it does
        doom-dashboard    ; a nifty splash screen for Emacs
        ;;doom-quit         ; DOOM quit-message prompts when you quit Emacs
-       ;;(emoji +unicode)  ; 🙂
+       (emoji +unicode)  ; 🙂
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;hydra
        ;;indent-guides     ; highlighted indent columns
-       ;;ligatures         ; ligatures and symbols to make your code pretty again
+       (ligatures +extra)         ; ligatures and symbols to make your code pretty again
        ;;minimap           ; show a map of the code on the side
        modeline          ; snazzy, Atom-inspired modeline, plus API
        ;;nav-flash         ; blink cursor line after big motions
@@ -47,18 +45,17 @@
        treemacs          ; a project drawer, like neotree but cooler
        ;;unicode           ; extended unicode support for various languages
        vc-gutter         ; vcs diff in the fringe
-       vi-tilde-fringe   ; fringe tildes to mark beyond EOB
+       ;;vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        ;;window-select     ; visually switch windows
        workspaces        ; tab emulation, persistence & separate workspaces
-       ;;zen               ; distraction-free coding or writing
+       zen               ; distraction-free coding or writing
 
        :editor
        (evil +everywhere); come to the dark side, we have cookies
        ;;file-templates    ; auto-snippets for empty files.
          ;; Enabling this causes problems in personal config: org-roam-capture-templates (Warning: killing zombie snippets)
        fold              ; (nigh) universal code folding
-       ;;(format +onsave)  ; automated prettiness
-       ;;god               ; run Emacs commands without modifier keys
+       (format +onsave)  ; automated prettiness
        ;;lispy             ; vim for lisp, for people who don't like vim
        ;;multiple-cursors  ; editing in many places at once
        ;;objed             ; text object editing for the innocent
@@ -82,17 +79,14 @@
        vterm             ; the best terminal emulation in Emacs
 
        :checkers
-       syntax              ; tasing you for every semicolon you forget
+       (syntax +childframe)              ; tasing you for every semicolon you forget
        (spell +flyspell) ; tasing you for misspelling mispelling
-       grammar           ; tasing grammar mistake every you make
+       ;grammar           ; tasing grammar mistake every you make
 
        :tools
-       ;;ansible
-       ;;biblio            ; Writes a PhD for you (citation needed)
+       biblio            ; Writes a PhD for you (citation needed)
        ;;debugger          ; FIXME stepping through code, to help you add bugs
-       ;;direnv
-       ;;docker
-       ;;editorconfig      ; let someone else argue about tabs vs spaces
+       direnv
        ;;ein               ; tame Jupyter notebooks with emacs
        (eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
@@ -123,8 +117,9 @@
        ;;coq               ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
        ;;csharp            ; unity, .NET, and mono shenanigans
-       ;;data              ; config/data formats
-       (dart +flutter)   ; paint ui and not much else
+       data              ; config/data formats
+       ;(dart +flutter)   ; paint ui and not much else
+       (latex +latexmk)
        ;;dhall
        ;;elixir            ; erlang done right
        ;;elm               ; care for a cup of TEA?
@@ -159,8 +154,10 @@
         +pretty
         +journal          ;
         +roam2
+        +hugo
         +Dragndrop        ; Exporting org to whatever you want
-        +present)         ; Emacs for presentations
+        +present
+        +dnd)         ; Emacs for presentations
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
@@ -179,7 +176,7 @@
        ;;solidity          ; do you need a blockchain? No.
        ;;swift             ; who asked for emoji variables?
        ;;terra             ; Earth and Moon in alignment for performance.
-       web               ; the tubes
+       ;;web               ; the tubes
        yaml              ; JSON, but readable
        ;;zig               ; C, but simpler
 
@@ -203,3 +200,6 @@
 ;; From https://emacs.stackexchange.com/questions/42281/org-mode-is-it-possible-to-display-online-images
 ;; Display in-buffer online images
 ;; format: [[img{url}]]
+
+;;Add this line to add citeproc-org renderer
+;;(citeproc-org-setup)
