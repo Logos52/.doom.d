@@ -60,9 +60,10 @@
       (evil-append 0)
       ad-do-it
       (evil-normal-state))))
-;;(unpin! org-roam)
+
 (package! org-journal)
 (package! org-roam-ui)
 (package! org-yt)
 (package! citeproc-org)
 (package! simpleclip)
+(package! org-super-agenda)

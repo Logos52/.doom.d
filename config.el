@@ -75,18 +75,39 @@
  deft-use-filter-string-for-filename t
  deft-text-mode 'org-mode
  org-mode-hide-leading-stars t
-;;org-bullets-bullet-list '("⁖")
- ;org-superstar-headline-bullets-list '("⁖" "○" "⚬" "∙" "∘")
- ;org-ellipsis " ... "
  org-startup-with-inline-images t
  org-image-actual-width nil
-;org-support-shift-select t
+ org-support-shift-select t
 ;;Evil mode revert
  evil-move-cursor-back nil
  evil-move-beyond-eol t
 ;;org-hugo export options
  org-hugo-front-matter-format "yaml"
  )
+
+(use-package org-super-agenda
+  :after org-agenda
+  :init
+  (setq org-super-agenda-groups '((:name "Today"
+                                        :time-grid t
+                                        :scheduled today)
+                                  (:name "Due today"
+                                        :deadline today)
+                                  (:name "Important"
+                                        :priority "A")
+                                  (:name "Overdue"
+                                        :deadline past)
+                                  (:name "Due soon"
+                                        :deadline future)
+                                  (:name "Big Outcomes"
+                                        :tag ""today"bo")
+                                  ))
+
+  :config
+  (org-super-agenda-mode)
+  )
+
+
 
 ;; CUA type customizations
 (require 'simpleclip)
@@ -223,14 +244,15 @@
 (setq org-ellipsis " ... ")
 (setq org-hide-emphasis-markers t)
 
+;;Org files, buffer face, general styles,
 (defun my/buffer-face-mode-variable ()
   (interactive)
   (setq buffer-face-mode-face '(:family "Roboto"
                                 :height 150
                                 :width normal))
-  (buffer-face-mode))
-
-;; Org files general styles
+  (buffer-face-mode)
+  )
+;; ---
 (defun my/set-general-faces-org ()
   (org-indent-mode -1)
   (my/buffer-face-mode-variable)
@@ -263,7 +285,7 @@
          'org-drawer
          'org-property-value
          )))
-
+;;---
 (defun my/set-specific-faces-org ()
   (set-face-attribute 'org-code nil
                       :inherit '(shadow fixed-pitch))
@@ -295,7 +317,7 @@
   ;(set-face-attribute 'variable-pitch nil
   ;                    :family "Roboto" :size 14)
   )
-
+;;---
 (defun my/set-keyword-faces-org ()
   (mapc (lambda (pair) (push pair prettify-symbols-alist))
         '(;; Syntax
@@ -310,13 +332,13 @@
   (prettify-symbols-mode +1)
   (org-superstar-mode +1)
   )
-
+;;---
 (defun my/style-org ()
   (my/set-general-faces-org)
   (my/set-specific-faces-org)
   (my/set-keyword-faces-org)
   )
-
+;; =====================
 (add-hook 'org-mode-hook 'my/style-org)
 ;;(add-hook 'markdown-mode-hook 'my/buffer-face-mode-variable)
 ;;(add-hook 'mixed-pitch-mode-hook)
