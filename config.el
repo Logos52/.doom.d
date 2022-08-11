@@ -200,14 +200,6 @@
 (use-package! websocket
     :after org-roam)
 
-(use-package! org-roam-ui
-    :after org-roam
-    :config
-    (setq org-roam-ui-sync-theme t
-          org-roam-ui-follow t
-          org-roam-ui-update-on-save t
-          org-roam-ui-open-on-start t))
-
 ;(remove-hook 'text-mode-hook #'vi-tilde-fringe-mode)
 ;(remove-hook 'org-mode-hook #'vi-tilde-fringe-mode)
 
@@ -245,9 +237,10 @@
 (defun my/set-faces-org ()
   (setq line-spacing 0.1
         org-pretty-entities t
-        org-startup-indented t
-        org-adapt-indentation nil
-        org-indent-mode nil
+        ;org-startup-indented t
+        ;org-adapt-indentation nil
+        ;org-indent-mode nil
+        electric-indent-mode t
         )
   (variable-pitch-mode +1)
   (mapc
@@ -279,16 +272,16 @@
   ;; Without indentation the headlines need to be different to be visible
   ;; https://coolors.co/bea4db-a382ff-9b77ff-9999ff-7385fc
   (set-face-attribute 'org-level-1 nil
-                      :height 1.1
+                      ;:height 1.1
                       :foreground "#BEA4DB")
   (set-face-attribute 'org-level-2 nil
-                      :height 1.075
+                      ;:height 1.075
                       :foreground "#A382FF")
   (set-face-attribute 'org-level-3 nil
-                      :height 1.05
+                      ;:height 1.05
                       :foreground "#9B77FF")
   (set-face-attribute 'org-level-4 nil
-                      :height 1.025
+                      ;:height 1.025
                       :foreground "#9999FF")
   (set-face-attribute 'org-level-5 nil
                       :foreground "#7385FC")
@@ -315,24 +308,28 @@
 (add-hook 'message-mode-hook #'word-wrap-mode)
 
 ;; Org mode Misc customizations
-(use-package! org-fragtog
-  :after org
-  :hook (org-mode . org-fragtog-mode)
-  )
+;(use-package! org-fragtog
+;  :after org
+;  :hook (org-mode . org-fragtog-mode)
+;  )
 (use-package! org-appear
   :after org
   :hook (org-mode . org-appear-mode)
   :config (setq
-           org-appear-autolinks t
+           ;org-appear-autolinks t
            org-appear-autoentities t
            org-appear-autosubmarkers t ))
+
+
+(after! centaur-tabs
+  (setq centaur-tabs-style "wave"))
 ;;Org mode Buffer  (https://github.com/tefkah/doom-emacs-config)
 (defun org-roam-buffer-setup ()
   "Function to make org-roam-buffer more pretty."
   (progn
-    (setq-local olivetti-body-width 44)
+    ;(setq-local olivetti-body-width 44)
     (variable-pitch-mode 1)
-    (olivetti-mode 1)
+    ;(olivetti-mode 1)
     (centaur-tabs-local-mode -1)
 
   (set-face-background 'magit-section-highlight (face-background 'default))))
@@ -343,8 +340,20 @@
 (use-package! org-roam-ui
   :after org-roam
   :config
-  (setq org-roam-ui-open-on-start nil)
-  (setq org-roam-ui-browser-function #'xwidget-webkit-browse-url))
+  (setq org-roam-ui-open-on-start t
+        org-roam-ui-browser-function #'xwidget-webkit-browse-url
+        org-roam-ui-sync-theme t
+         org-roam-ui-follow t
+         org-roam-ui-update-on-save t)
+  )
+
+(use-package! org-roam-ui
+    :after org-roam
+    :config
+    (setq
+        org-roam-ui-open-on-start t))
+
+
 
 ;;remove stars
 (defun org-mode-remove-stars ()
@@ -358,6 +367,7 @@
 
 (add-hook! 'org-mode-hook #'org-mode-remove-stars)
 
+
 ;;; Ugly org hooks
 (defun nicer-org ()
   (progn
@@ -365,13 +375,16 @@
   (mixed-pitch-mode 1)
   (hl-line-mode -1)
   (display-line-numbers-mode -1)
-  (olivetti-mode 1)
+  ;(olivetti-mode 1)
   ;(org-num-mode 1)
   (org-superstar-mode -1)
-  (org-indent-mode -1)
+  (electric-indent-mode 1)
   ))
 
-(add-hook! 'org-mode-hook  #'nicer-org)
+(add-hook! 'org-mode-hook
+           #'nicer-org
+           'org-fragtog-mode
+           )
 ; Org hugo export section
 ;;((nil . ((org-hugo-base-dir . "~/website")
 ;;         (org-hugo-section . "notes"))))
@@ -390,6 +403,7 @@
 
 ;; find lisp find files
 ;;
+
 
 ;(add-to-list 'after-save-hook #'org-hugo--org-roam-save-buffer)
 

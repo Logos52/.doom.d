@@ -67,3 +67,5 @@
 (package! citeproc-org)
 (package! simpleclip)
 (package! org-super-agenda)
+(package! org-fragtog)
+(package! org-appear)
