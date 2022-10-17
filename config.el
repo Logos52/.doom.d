@@ -20,10 +20,8 @@
         doom-themes-enable-italic t
         load-prefer-newer t
         doom-font (font-spec :family "Dank Mono" :size 14.0)
-        ;doom-variable-pitch-font (font-spec :family "Roboto" :size 14)
         doom-variable-pitch-font (font-spec :family "iA Writer Duospace" :size 15)
         doom-serif-font (font-spec :family "Libre Baskerville")
-        ;doom-theme 'doom-oceanic-next
         doom-theme 'doom-one
         display-line-numbers-mode t
         +zen-text-scale 1
@@ -115,8 +113,6 @@
   (org-super-agenda-mode)
   )
 
-
-
 ;; CUA type customizations
 (require 'simpleclip)
 (setq simpleclip-mode 1)
@@ -134,19 +130,12 @@
 (map! "C-S-s" #'write-file)
 (map! "C-S-p" #'execute-extended-command)
 
-;; Org Journal -------------------
-(use-package org-journal
-  :custom
-  (org-journal-dir "/Users/n1/Library/Mobile Documents/com~apple~CloudDocs/NX/Journal/")
-  (org-journal-date-prefix "#+title: ")
-  (org-journal-date-format "%Y-%m-%d")
-  (org-journal-time-prefix "* ")
-  (org-journal-file-format "%Y-%m-%d.org")
-  (org-journal-is-journal nil))
+
 
 ;; Org Roam ---------------------------------------
 ;; ------------------------------------------------
 (use-package! org-roam
+  :ensure t
   :init
   (setq org-roam-directory "/Users/n1/Library/Mobile Documents/com~apple~CloudDocs/NX/Capture/"
         org-id-link-to-org-use-id t)
@@ -163,13 +152,27 @@
         (list #'org-roam-backlinks-insert-section
               #'org-roam-reflinks-insert-section
               #'org-roam-unlinked-references-insert-section))
-  (org-roam-setup)
+  ;;(org-roam-setup)
   (org-roam-db-autosync-mode)
+  (org-roam-db-autosync-enable)
   (setq org-roam-v2-ack t)
    ; (add-hook 'org-roam-mode-hook #'turn-on-visual-line-mode)
+
+   ;  --- Org Roam Dailies
+  (setq org-roam-dailies-directory "/Users/n1/Library/Mobile Documents/com~apple~CloudDocs/NX/Journal/")
+  (setq org-roam-dailies-capture-templates
+         '(("d" "default" entry
+            "* %?"
+         :immediate-finish t
+         :if-new (file+head "%<%Y-%m-%d>.org"
+                            "#+title: %<%Y-%m-%d>\n"))))
    )
-(setq org-id-extra-files (org-roam--list-files org-roam-directory))
+;;(setq org-id-extra-files (org-roam--list-files org-roam-directory))
+(setq org-id-extra-files (directory-files-recursively org-roam-directory "\.org$"))
+(setq org-export-with-broken-links t)
+
 ;; --------------------------------------------------
+;; ;; Org Journal -------------------
 
 
 ;;  Code source: https://github.com/jrblevin/deft/issues/75
@@ -298,8 +301,10 @@
   )
 (add-hook 'org-mode-hook 'my/set-faces-org)
 
-(use-package! ox-hugo
-  :after ox)
+;(use-package! ox-hugo
+;  :after ox)i
+(with-eval-after-load 'ox
+  (require 'ox-hugo))
 
 (use-package! yaml-mode
   :mode ("\\.yml\\'" . yaml-mode))
@@ -340,8 +345,8 @@
 (use-package! org-roam-ui
   :after org-roam
   :config
-  (setq org-roam-ui-open-on-start t
-        org-roam-ui-browser-function #'xwidget-webkit-browse-url
+  (setq ;org-roam-ui-open-on-start t
+        ;org-roam-ui-browser-function #'xwidget-webkit-browse-url
         org-roam-ui-sync-theme t
          org-roam-ui-follow t
          org-roam-ui-update-on-save t)
@@ -416,3 +421,6 @@
     (with-current-buffer (find-file-noselect fil)
       (org-hugo-export-wim-to-md)
       (kill-buffer))))
+
+(setq native-comp-async-jobs-number 1)
+(setq org-fold-core-style 'overlays)

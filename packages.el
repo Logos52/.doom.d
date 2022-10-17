@@ -69,3 +69,4 @@
 (package! org-super-agenda)
 (package! org-fragtog)
 (package! org-appear)
+(package! emacsql-sqlite)

@@ -21,7 +21,7 @@
 
        :completion
        company           ; the ultimate code completion backend
-       (corfu +orderless)
+       ;;(corfu +orderless)
        ;;helm              ; the *other* search engine for love and life
        (vertico +orderless +icons)           ; the search engine of the future
 
@@ -30,7 +30,7 @@
        doom              ; what makes DOOM look the way it does
        doom-dashboard    ; a nifty splash screen for Emacs
        ;;doom-quit         ; DOOM quit-message prompts when you quit Emacs
-       (emoji +unicode)  ; 🙂
+       ;;(emoji +unicode)  ; 🙂
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;hydra
        ;;indent-guides     ; highlighted indent columns
@@ -151,13 +151,12 @@
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org               ; organize your plain life in plain text
-        +pretty
-        +journal          ;
+        +dragndrop       ; Exporting org to whatever you want
+        ;; +journal          ;
         +roam2
         +hugo
-        +Dragndrop        ; Exporting org to whatever you want
         +present
-        +dnd)         ; Emacs for presentations
+        +pretty)         ; Emacs for presentations
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
