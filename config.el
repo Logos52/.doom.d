@@ -3,13 +3,13 @@
 
 ;(unless (equal "Battery status not available"
 ;  (battery))
-;  (display-battery-mode 1))                           ; On laptops it's nice to know how much power you have
+;  (display-battery-mode 1))    ; On laptops it's nice to know how much power you have
                                         ;
 (use-package doom-themes
   :ensure t
   :config
   ;; Global defaults
-  (setq org-directory "/Users/n1/Library/Mobile Documents/com~apple~CloudDocs/NX/"
+  (setq org-directory "/Users/n1/Library/Mobile Documents/com~apple~CloudDocs/NX/Org"
         projectile-project-search-path '("~/Documents/Projects/")
         org-hugo-section "notes"
         org-hugo-base-dir "~/website/"
@@ -33,12 +33,11 @@
   (custom-set-faces!
         '(font-lock-keyword-face :slant italic))
 
-
-; (doom-themes-visual-bell-config)
-;(doom-themes-neotree-config)
+;; (doom-themes-visual-bell-config)
+;; (doom-themes-neotree-config)
   (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
-; (doom-themes-treemacs-config)
- ; (doom-themes-org-config)
+;; (doom-themes-treemacs-config)
+;; (doom-themes-org-config)
   (solaire-global-mode +1)
   )
 
@@ -91,6 +90,13 @@
  org-hugo-front-matter-format "yaml"
  )
 
+;; Org-Agenda
+(setq org-agenda-files '("/Users/n1/Library/Mobile\ Documents/com\~apple\~CloudDocs/NX/Agenda/")
+      org-agenda-custom-commands
+        '(("c" "Simple agenda view"
+         ((agenda "")
+          (alltodo "")))))
+
 (use-package org-super-agenda
   :after org-agenda
   :init
@@ -138,6 +144,7 @@
   :ensure t
   :init
   (setq org-roam-directory "/Users/n1/Library/Mobile Documents/com~apple~CloudDocs/NX/Capture/"
+        org-roam-dailies-directory "/Users/n1/Library/Mobile Documents/com~apple~CloudDocs/NX/Journal/"
         org-id-link-to-org-use-id t)
   :config
     (setq org-roam-completion-everywhere t)
@@ -147,36 +154,39 @@
        :immediate-finish t
       :if-new (file+head "${slug}.org"
                          "#+title: ${title}\n#+hugo_lastmod: Time-stamp: <>\n\n")
-      :unarrowed t)))
+      :unarrowed t))
+        org-roam-dailies-capture-templates
+         '(("d" "default" entry "* %?"
+         :immediate-finish t
+         ;:unarrowed t
+         :target (file+head "%<%Y-%m-%d>.org"
+                            "#+title: %<%Y-%m-%d>\n"))))
+
+     )
     (setq org-roam-mode-sections
         (list #'org-roam-backlinks-insert-section
               #'org-roam-reflinks-insert-section
               #'org-roam-unlinked-references-insert-section))
-  ;;(org-roam-setup)
   (org-roam-db-autosync-mode)
   (org-roam-db-autosync-enable)
   (setq org-roam-v2-ack t)
-   ; (add-hook 'org-roam-mode-hook #'turn-on-visual-line-mode)
 
    ;  --- Org Roam Dailies
-  (setq org-roam-dailies-directory "/Users/n1/Library/Mobile Documents/com~apple~CloudDocs/NX/Journal/")
-  (setq org-roam-dailies-capture-templates
-         '(("d" "default" entry
-            "* %?"
-         :immediate-finish t
-         :if-new (file+head "%<%Y-%m-%d>.org"
-                            "#+title: %<%Y-%m-%d>\n"))))
-   )
-;;(setq org-id-extra-files (org-roam--list-files org-roam-directory))
-(setq org-id-extra-files (directory-files-recursively org-roam-directory "\.org$"))
-(setq org-export-with-broken-links t)
+
+(setq org-id-extra-files (directory-files-recursively org-roam-directory "\.org$")
+      org-export-with-broken-links t
+      org-export-preserve-breaks t
+      )
 
 ;; --------------------------------------------------
 ;; ;; Org Journal -------------------
 
 
 ;;  Code source: https://github.com/jrblevin/deft/issues/75
-;;  "Parse the given FILE and CONTENTS and determine the title. If `deft-use-filename-as-title' is nil, the title is taken to be the first non-empty line of the FILE.  Else the base name of the FILE used as title."
+;;  "Parse the given FILE and CONTENTS and determine the title.
+;;  If `deft-use-filename-as-title' is nil, the title is taken to be
+;;    the first non-empty line of the FILE.
+;;  Else the base name of the FILE used as title."
 (defun my/deft-parse-title (file contents)
       (let ((begin (string-match "^#\\+[tT][iI][tT][lL][eE]: .*$" contents)))
         (if begin
@@ -203,13 +213,10 @@
 (use-package! websocket
     :after org-roam)
 
-;(remove-hook 'text-mode-hook #'vi-tilde-fringe-mode)
-;(remove-hook 'org-mode-hook #'vi-tilde-fringe-mode)
-
 (add-hook 'before-save-hook 'time-stamp)
 (setq org-return-follows-link t)
 
-;; Setting up Org md
+;; Setting up Org markdown
 (setq org-todo-keywords
       '((sequence "TODO(t)" "NEXT(n)" "HOLD(h)" "|" "DONE(d)")))
 
@@ -234,20 +241,15 @@
 
 ;;Org files, buffer face, general styles,
 ;; ---
-
-;; =====================
 ;;
 (defun my/set-faces-org ()
   (setq line-spacing 0.1
         org-pretty-entities t
-        ;org-startup-indented t
-        ;org-adapt-indentation nil
-        ;org-indent-mode nil
         electric-indent-mode t
         )
   (variable-pitch-mode +1)
   (mapc
-   (lambda (face) ;; Other fonts that require it are set to fixed-pitch.
+   (lambda (face) ;; Other fonts that require this are set to fixed-pitch.
      (set-face-attribute face nil :inherit 'fixed-pitch))
    (list 'org-block
          'org-table
@@ -260,7 +262,7 @@
          'org-property-value
          'org-special-keyword
          'org-document-info-keyword))
-  (mapc ;; This sets the fonts to a smaller size
+  (mapc ;; Sets the fonts to a smaller size
    (lambda (face)
      (set-face-attribute face nil :height 0.8))
    (list 'org-document-info-keyword
@@ -302,9 +304,14 @@
 (add-hook 'org-mode-hook 'my/set-faces-org)
 
 ;(use-package! ox-hugo
-;  :after ox)i
+;  :after ox)
 (with-eval-after-load 'ox
   (require 'ox-hugo))
+
+(setq org-hugo-front-matter-format "yaml"
+      org-hugo-prefer-hyphen-in-tags t
+      org-hugo-delete-trailing-ws nil
+      )
 
 (use-package! yaml-mode
   :mode ("\\.yml\\'" . yaml-mode))
@@ -313,10 +320,6 @@
 (add-hook 'message-mode-hook #'word-wrap-mode)
 
 ;; Org mode Misc customizations
-;(use-package! org-fragtog
-;  :after org
-;  :hook (org-mode . org-fragtog-mode)
-;  )
 (use-package! org-appear
   :after org
   :hook (org-mode . org-appear-mode)
@@ -332,9 +335,7 @@
 (defun org-roam-buffer-setup ()
   "Function to make org-roam-buffer more pretty."
   (progn
-    ;(setq-local olivetti-body-width 44)
     (variable-pitch-mode 1)
-    ;(olivetti-mode 1)
     (centaur-tabs-local-mode -1)
 
   (set-face-background 'magit-section-highlight (face-background 'default))))
@@ -345,9 +346,7 @@
 (use-package! org-roam-ui
   :after org-roam
   :config
-  (setq ;org-roam-ui-open-on-start t
-        ;org-roam-ui-browser-function #'xwidget-webkit-browse-url
-        org-roam-ui-sync-theme t
+  (setq org-roam-ui-sync-theme t
          org-roam-ui-follow t
          org-roam-ui-update-on-save t)
   )
@@ -358,9 +357,7 @@
     (setq
         org-roam-ui-open-on-start t))
 
-
-
-;;remove stars
+;; Test function, remove stars
 (defun org-mode-remove-stars ()
   (font-lock-add-keywords
    nil
@@ -372,7 +369,6 @@
 
 (add-hook! 'org-mode-hook #'org-mode-remove-stars)
 
-
 ;;; Ugly org hooks
 (defun nicer-org ()
   (progn
@@ -380,8 +376,6 @@
   (mixed-pitch-mode 1)
   (hl-line-mode -1)
   (display-line-numbers-mode -1)
-  ;(olivetti-mode 1)
-  ;(org-num-mode 1)
   (org-superstar-mode -1)
   (electric-indent-mode 1)
   ))
@@ -396,8 +390,6 @@
 
 ;(defun org-roam-file-p (&optional file)
 
-
-
 ;;Auto export on save 
 (require 'find-lisp)
 ;(setq org-id-extra-files (find-lisp-find-files org-roam-directory "\.org$"))
@@ -408,8 +400,6 @@
 
 ;; find lisp find files
 ;;
-
-
 ;(add-to-list 'after-save-hook #'org-hugo--org-roam-save-buffer)
 
 

@@ -70,3 +70,4 @@
 (package! org-fragtog)
 (package! org-appear)
 (package! emacsql-sqlite)
+(package! ox-zola :recipe (:host github :repo "/gicrisf/ox-zola"))
